@@ -66,7 +66,7 @@ onMounted(() => {
 			setingsRef.value.openDrawer();
 		});
 		// 获取缓存中的布局配置
-		if (Local.get('themeConfig')) {
+    if (Local.get('themeConfig')) {
 			storesThemeConfig.setThemeConfig({ themeConfig: Local.get('themeConfig') });
 			document.documentElement.style.cssText = Local.get('themeConfigStyle');
 		}

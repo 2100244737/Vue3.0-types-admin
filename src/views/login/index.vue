@@ -50,7 +50,7 @@ import { NextLoading } from '/@/utils/loading';
 import logoMini from '/@/assets/logo-mini.svg';
 import loginMain from '/@/assets/login-main.svg';
 import loginBg from '/@/assets/login-bg.svg';
-
+import { gettingData, system } from "/@/api/index.ts";
 // 引入组件
 const Account = defineAsyncComponent(() => import('/@/views/login/component/account.vue'));
 const Mobile = defineAsyncComponent(() => import('/@/views/login/component/mobile.vue'));
@@ -63,13 +63,22 @@ const state = reactive({
 	tabsActiveName: 'account',
 	isScan: false,
 });
-
+const getMenu =() =>{
+  const params = {
+    openId: '55cf6a80d95d495a91cd2703b05207f1',
+    accessToken: 'b3d4b2835043443096f46aed729f61db'
+  }
+  gettingData(params, system.USER_LOGIN).then((res) => {
+    console.log(res,'USER_LOGIN');
+  });
+}
 // 获取布局配置信息
 const getThemeConfig = computed(() => {
 	return themeConfig.value;
 });
 // 页面加载时
 onMounted(() => {
+  getMenu ()
 	NextLoading.done();
 });
 </script>

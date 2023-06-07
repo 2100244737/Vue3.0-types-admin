@@ -47,6 +47,7 @@ import { defineAsyncComponent, onMounted, reactive, computed } from 'vue';
 import { storeToRefs } from 'pinia';
 import { useThemeConfig } from '/@/stores/themeConfig';
 import { NextLoading } from '/@/utils/loading';
+import { setToken } from '/@/utils/auth';
 import logoMini from '/@/assets/logo-mini.svg';
 import loginMain from '/@/assets/login-main.svg';
 import loginBg from '/@/assets/login-bg.svg';
@@ -69,6 +70,8 @@ const getMenu =() =>{
     accessToken: 'b3d4b2835043443096f46aed729f61db'
   }
   gettingData(params, system.USER_LOGIN).then((res) => {
+    setToken('openId',params.openId)
+    setToken('accessToken',params.accessToken)
     console.log(res,'USER_LOGIN');
   });
 }

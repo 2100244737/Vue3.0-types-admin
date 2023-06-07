@@ -1,15 +1,15 @@
 <template>
 	<div class="system-user-dialog-container">
-		<el-dialog :title="state.dialog.title" v-model="state.dialog.isShowDialog" width="769px">
-			<el-form ref="userDialogFormRef" :model="state.ruleForm" size="default" label-width="90px">
+		<el-dialog :title="state.dialog.title"  v-model="state.dialog.isShowDialog" width="769px">
+			<el-form ref="userDialogFormRef" :rules="state.rules" :model="state.ruleForm" size="default" label-width="90px">
 				<el-row :gutter="35">
 					<el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12" class="mb20">
-						<el-form-item label="账户名称">
+						<el-form-item label="账户名称" prop="userName">
 							<el-input v-model="state.ruleForm.userName" placeholder="请输入账户名称" clearable></el-input>
 						</el-form-item>
 					</el-col>
 					<el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12" class="mb20">
-						<el-form-item label="用户昵称">
+						<el-form-item label="用户昵称" prop="userNickname">
 							<el-input v-model="state.ruleForm.userNickname" placeholder="请输入用户昵称" clearable></el-input>
 						</el-form-item>
 					</el-col>
@@ -117,6 +117,10 @@ const state = reactive({
 		title: '',
 		submitTxt: '',
 	},
+  rules:{
+    userName: { required: true, message: '请输账户名称', trigger: 'blur' },
+    userNickname: { required: true, message: '请输入用户昵称', trigger: 'blur' }
+  }
 });
 
 // 打开弹窗
@@ -138,6 +142,7 @@ const openDialog = (type: string, row: RowUserType) => {
 // 关闭弹窗
 const closeDialog = () => {
 	state.dialog.isShowDialog = false;
+  userDialogFormRef.value.resetFields();
 };
 // 取消
 const onCancel = () => {
@@ -145,8 +150,15 @@ const onCancel = () => {
 };
 // 提交
 const onSubmit = () => {
-	closeDialog();
-	emit('refresh');
+  userDialogFormRef.value.validate((valid: boolean) => {
+    if (valid){
+      closeDialog();
+      emit('refresh');
+    }else {
+      return false
+    }
+  });
+
 	// if (state.dialog.type === 'add') { }
 };
 // 暴露变量

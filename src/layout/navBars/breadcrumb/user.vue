@@ -94,7 +94,7 @@ import mittBus from '/@/utils/mitt';
 import { Session, Local } from '/@/utils/storage';
 
 // 引入组件
-const UserNews = defineAsyncComponent(() => import('/@/layout/navBars/breadcrumb/userNews.vue'));
+// const UserNews = defineAsyncComponent(() => import('/@/layout/navBars/breadcrumb/userNews.vue'));
 const Search = defineAsyncComponent(() => import('/@/layout/navBars/breadcrumb/search.vue'));
 
 // 定义变量内容

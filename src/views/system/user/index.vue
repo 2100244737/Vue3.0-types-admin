@@ -1,21 +1,22 @@
 <template>
 	<div class="system-user-container layout-padding">
 		<el-card shadow="hover" class="layout-padding-auto">
-			<div class="system-user-search mb15">
-				<el-input size="default" placeholder="请输入用户名称" style="max-width: 180px"> </el-input>
-				<el-button size="default" type="primary" class="ml10" @click="getData">
-					<el-icon>
-						<ele-Search />
-					</el-icon>
-					查询
-				</el-button>
-				<el-button size="default" type="success" class="ml10" @click="onOpenAddUser('add')">
-					<el-icon>
-						<ele-FolderAdd />
-					</el-icon>
-					新增用户
-				</el-button>
-			</div>
+<!--			<div class="system-user-search mb15">-->
+<!--				<el-input size="default" placeholder="请输入用户名称" style="max-width: 180px"> </el-input>-->
+<!--				<el-button size="default" type="primary" class="ml10" @click="getData">-->
+<!--					<el-icon>-->
+<!--						<ele-Search />-->
+<!--					</el-icon>-->
+<!--					查询-->
+<!--				</el-button>-->
+<!--				<el-button size="default" type="success" class="ml10" @click="onOpenAddUser('add')">-->
+<!--					<el-icon>-->
+<!--						<ele-FolderAdd />-->
+<!--					</el-icon>-->
+<!--					新增用户-->
+<!--				</el-button>-->
+<!--			</div>-->
+      <TableSearch @search="searchChange"/>
 			<el-table :data="state.tableData.data" v-loading="state.tableData.loading" style="width: 100%">
 				<el-table-column type="index" label="序号" width="60" />
 				<el-table-column prop="operatorCode" label="工号" show-overflow-tooltip></el-table-column>
@@ -53,6 +54,7 @@ import { gettingData, system } from "/@/api/index.ts";
 const Pagination = defineAsyncComponent(() => import('/@/components/pagination/index.vue'));
 // 引入组件
 const UserDialog = defineAsyncComponent(() => import('/@/views/system/user/dialog.vue'));
+const TableSearch = defineAsyncComponent(() => import('/@/views/system/user/TableSearch.vue'));
 
 
 // 定义变量内容
@@ -76,13 +78,15 @@ const getData =()=> {
     state.tableData.total = dataModel.totalCount
   })
 }
-// 打开新增用户弹窗
-const onOpenAddUser = (type: string) => {
-	userDialogRef.value.openDialog(type);
-};
+// 查询事件
+const searchChange =(data: object)=> {
+  state.tableData.param = Object.assign({}, state.tableData.param, { ...data });
+  getData();
+}
 // 打开修改用户弹窗
 const onOpenEditUser = (type: string, row: RowUserType) => {
 	userDialogRef.value.openDialog(type, row);
+
 };
 // 删除用户
 const onRowDel = (row: RowUserType) => {

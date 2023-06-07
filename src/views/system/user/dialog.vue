@@ -134,7 +134,6 @@ const openDialog = (type: string, row: RowUserType) => {
 		// });
 	}
 	state.dialog.isShowDialog = true;
-	getMenuData();
 };
 // 关闭弹窗
 const closeDialog = () => {
@@ -150,36 +149,6 @@ const onSubmit = () => {
 	emit('refresh');
 	// if (state.dialog.type === 'add') { }
 };
-// 初始化部门数据
-const getMenuData = () => {
-	state.deptData.push({
-		deptName: 'vueNextAdmin',
-		createTime: new Date().toLocaleString(),
-		status: true,
-		sort: Math.random(),
-		describe: '顶级部门',
-		id: Math.random(),
-		children: [
-			{
-				deptName: 'IT外包服务',
-				createTime: new Date().toLocaleString(),
-				status: true,
-				sort: Math.random(),
-				describe: '总部',
-				id: Math.random(),
-			},
-			{
-				deptName: '资本控股',
-				createTime: new Date().toLocaleString(),
-				status: true,
-				sort: Math.random(),
-				describe: '分部',
-				id: Math.random(),
-			},
-		],
-	});
-};
-
 // 暴露变量
 defineExpose({
 	openDialog,

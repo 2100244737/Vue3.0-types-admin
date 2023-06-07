@@ -59,7 +59,7 @@
 <script setup lang="ts" name="systemRole">
 import { defineAsyncComponent, reactive, onMounted, ref } from 'vue';
 import { ElMessageBox, ElMessage } from 'element-plus';
-
+import { gettingData, system } from "/@/api/index.ts";
 // 引入组件
 const RoleDialog = defineAsyncComponent(() => import('/@/views/system/role/dialog.vue'));
 
@@ -77,6 +77,15 @@ const state = reactive<SysRoleState>({
 		},
 	},
 });
+// 查询分页
+const getData =()=> {
+  const params = {
+
+  }
+  gettingData(params, system.USER_PAGE).then((res) => {
+    console.log(res,'USER_LOGIN');
+  });
+}
 // 初始化表格数据
 const getTableData = () => {
 	state.tableData.loading = true;
@@ -131,6 +140,7 @@ const onHandleCurrentChange = (val: number) => {
 // 页面加载时
 onMounted(() => {
 	getTableData();
+  getData()
 });
 </script>
 

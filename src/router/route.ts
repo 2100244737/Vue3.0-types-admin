@@ -66,7 +66,7 @@ export const dynamicRoutes: Array<RouteRecordRaw> = [
 				path: '/system',
 				name: 'system',
 				component: () => import('/@/layout/routerView/parent.vue'),
-				redirect: '/system/menu',
+				redirect: '/system/userManagement',
 				meta: {
 					title: 'message.router.system',
 					isLink: '',
@@ -79,7 +79,7 @@ export const dynamicRoutes: Array<RouteRecordRaw> = [
 				},
 				children: [
 					{
-						path: '/system/menu',
+						path: '/system/menuManagement',
 						name: 'systemMenu',
 						component: () => import('/@/views/system/menu/index.vue'),
 						meta: {
@@ -90,11 +90,11 @@ export const dynamicRoutes: Array<RouteRecordRaw> = [
 							isAffix: false,
 							isIframe: false,
 							roles: ['admin'],
-							icon: 'iconfont icon-caidan',
-						},
+							icon: 'iconfont icon-caidan'
+						}
 					},
 					{
-						path: '/system/role',
+						path: '/system/roleManagement',
 						name: 'systemRole',
 						component: () => import('/@/views/system/role/index.vue'),
 						meta: {
@@ -105,11 +105,11 @@ export const dynamicRoutes: Array<RouteRecordRaw> = [
 							isAffix: false,
 							isIframe: false,
 							roles: ['admin'],
-							icon: 'ele-ColdDrink',
+							icon: 'ele-ColdDrink'
 						},
 					},
 					{
-						path: '/system/user',
+						path: '/system/userManagement',
 						name: 'systemUser',
 						component: () => import('/@/views/system/user/index.vue'),
 						meta: {
@@ -120,7 +120,7 @@ export const dynamicRoutes: Array<RouteRecordRaw> = [
 							isAffix: false,
 							isIframe: false,
 							roles: ['admin'],
-							icon: 'iconfont icon-icon-',
+							icon: 'iconfont icon-icon-'
 						},
 					}
 				],

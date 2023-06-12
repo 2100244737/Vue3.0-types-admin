@@ -52,6 +52,16 @@ import logoMini from '/@/assets/logo-mini.svg';
 import loginMain from '/@/assets/login-main.svg';
 import loginBg from '/@/assets/login-bg.svg';
 import { gettingData, system } from "/@/api/index.ts";
+import {ElMessage} from "element-plus";
+import {Session} from "/@/utils/storage";
+import {initBackEndControlRoutes} from "/@/router/backEnd";
+import {formatAxis} from "/@/utils/formatTime";
+import {useRoute, useRouter} from "vue-router";
+import {useI18n} from "vue-i18n";
+const route = useRoute();
+const router = useRouter();
+// 定义变量内容
+const { t } = useI18n();
 // 引入组件
 const Account = defineAsyncComponent(() => import('/@/views/login/component/account.vue'));
 const Mobile = defineAsyncComponent(() => import('/@/views/login/component/mobile.vue'));
@@ -63,18 +73,54 @@ const { themeConfig } = storeToRefs(storesThemeConfig);
 const state = reactive({
 	tabsActiveName: 'account',
 	isScan: false,
+  loading: {
+    signIn: false,
+  }
 });
-const getMenu =() =>{
+const getMenu = () =>{
   const params = {
     openId: '55cf6a80d95d495a91cd2703b05207f1',
     accessToken: 'b3d4b2835043443096f46aed729f61db'
   }
-  gettingData(params, system.USER_LOGIN).then((res) => {
+  gettingData(params, system.USER_LOGIN).then( async () => {
     setToken('openId',params.openId)
     setToken('accessToken',params.accessToken)
-    console.log(res,'USER_LOGIN');
+    const isNoPower = await initBackEndControlRoutes();
+    console.log(isNoPower,'isNoPower');
+    // 执行完 initBackEndControlRoutes，再执行 signInSuccess
+    signInSuccess(isNoPower);
   });
 }
+// 时间获取
+const currentTime = computed(() => {
+  return formatAxis(new Date());
+});
+// 登录成功后的跳转
+const signInSuccess = (isNoPower: boolean | undefined) => {
+  if (isNoPower) {
+    ElMessage.warning('抱歉，您没有登录权限');
+    Session.clear();
+  } else {
+    // 初始化登录成功时间问候语
+    let currentTimeInfo = currentTime.value;
+    // 登录成功，跳到转首页
+    // 如果是复制粘贴的路径，非首页/登录页，那么登录成功后重定向到对应的路径中
+    if (route.query?.redirect) {
+      router.push({
+        path: <string>route.query?.redirect,
+        query: Object.keys(<string>route.query?.params).length > 0 ? JSON.parse(<string>route.query?.params) : '',
+      });
+    } else {
+      router.push('/');
+    }
+    // 登录成功提示
+    const signInText = t('message.signInText');
+    ElMessage.success(`${currentTimeInfo}，${signInText}`);
+    // 添加 loading，防止第一次进入界面时出现短暂空白
+    NextLoading.start();
+  }
+  state.loading.signIn = false;
+};
 // 获取布局配置信息
 const getThemeConfig = computed(() => {
 	return themeConfig.value;

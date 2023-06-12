@@ -3,14 +3,14 @@ import { storeToRefs } from 'pinia';
 import pinia from '/@/stores/index';
 import { useUserInfo } from '/@/stores/userInfo';
 import { useRequestOldRoutes } from '/@/stores/requestOldRoutes';
-import { Session } from '/@/utils/storage';
+// import { Session } from '/@/utils/storage';
 import { NextLoading } from '/@/utils/loading';
 import { dynamicRoutes, notFoundAndNoPower } from '/@/router/route';
 import { formatTwoStageRoutes, formatFlatteningRoutes, router } from '/@/router/index';
 import { useRoutesList } from '/@/stores/routesList';
 import { useTagsViewRoutes } from '/@/stores/tagsViewRoutes';
 import { useMenuApi } from '/@/api/menu/index';
-
+import {getToken} from "/@/utils/auth";
 // 后端控制路由
 
 // 引入 api 请求接口
@@ -36,20 +36,24 @@ const dynamicViewsModules: Record<string, Function> = Object.assign({}, { ...lay
 export async function initBackEndControlRoutes() {
 	// 界面 loading 动画开始执行
 	if (window.nextLoading === undefined) NextLoading.start();
-	// 无 token 停止执行下一步
-	if (!Session.get('token')) return false;
+	// 无 openId 停止执行下一步
+	if (!getToken('openId')) return false;
 	// 触发初始化用户信息 pinia
 	// https://gitee.com/lyt-top/vue-next-admin/issues/I5F1HP
+	// await useUserInfo().setUserInfos();
 	await useUserInfo().setUserInfos();
+
 	// 获取路由菜单数据
-	const res = await getBackEndControlRoutes();
+	let res = getBackEndControlRoutes()
 	// 无登录权限时，添加判断
 	// https://gitee.com/lyt-top/vue-next-admin/issues/I64HVO
-	if (res.data.length <= 0) return Promise.resolve(true);
+	if (res.length <= 0) return Promise.resolve(true);
 	// 存储接口原始路由（未处理component），根据需求选择使用
-	useRequestOldRoutes().setRequestOldRoutes(JSON.parse(JSON.stringify(res.data)));
+	await useRequestOldRoutes().setRequestOldRoutes(JSON.parse(JSON.stringify(res)));
 	// 处理路由（component），替换 dynamicRoutes（/@/router/route）第一个顶级 children 的路由
-	dynamicRoutes[0].children = await backEndComponent(res.data);
+	console.log(dynamicRoutes,'dynamicRoutes');
+	dynamicRoutes[0].children = await backEndComponent(res);
+	console.log(dynamicRoutes,'2222');
 	// 添加动态路由
 	await setAddRoute();
 	// 设置路由到 pinia routesList 中（已处理成多级嵌套路由）及缓存多级嵌套数组处理后的一维数组
@@ -110,11 +114,7 @@ export function getBackEndControlRoutes() {
 	// 模拟 admin 与 test
 	const stores = useUserInfo(pinia);
 	const { userInfos } = storeToRefs(stores);
-	const auth = userInfos.value.roles[0];
-	// 管理员 admin
-	if (auth === 'admin') return menuApi.getAdminMenu();
-	// 其它用户 test
-	else return menuApi.getTestMenu();
+	return  userInfos.value.menus
 }
 
 /**

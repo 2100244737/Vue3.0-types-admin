@@ -9,6 +9,7 @@ declare interface UserInfosState<T = any> {
 		photo: string;
 		roles: string[];
 		time: number;
+		menus: [],
 		userName: string;
 		[key: string]: T;
 	};

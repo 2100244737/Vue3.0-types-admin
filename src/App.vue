@@ -60,7 +60,6 @@ onBeforeMount(() => {
 });
 // 页面加载时
 onMounted(() => {
-  console.log(glob,'22');
   nextTick(() => {
 		// 监听布局配'置弹窗点击打开
 		mittBus.on('openSetingsDrawer', () => {

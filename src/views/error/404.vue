@@ -13,9 +13,7 @@
 					</div>
 				</div>
 				<div class="right">
-					<img
-						src="https://img-blog.csdnimg.cn/9eb1d85a417f4ed1ba7107f149ce3da1.png?x-oss-process=image/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBAbHl0LXRvcA==,size_16,color_FFFFFF,t_70,g_se,x_16"
-					/>
+					<img :src="img404"/>
 				</div>
 			</div>
 		</div>
@@ -24,7 +22,7 @@
 
 <script setup lang="ts" name="notFound">
 import { useRouter } from 'vue-router';
-
+import img404 from '/@/assets/404.png';
 // 定义变量内容
 const router = useRouter();
 

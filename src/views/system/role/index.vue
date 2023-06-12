@@ -83,7 +83,7 @@ const getData =()=> {
 
   }
   gettingData(params, system.USER_PAGE).then((res) => {
-    console.log(res,'USER_LOGIN');
+
   });
 }
 // 初始化表格数据

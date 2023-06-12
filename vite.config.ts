@@ -34,7 +34,7 @@ const viteConfig = defineConfig((mode: ConfigEnv) => {
 					ws: true,
 					changeOrigin: true,
 					// rewrite: (path) => path.replace(/^\/gitee/, ''),
-				},
+				}
 			},
 		},
 		build: {

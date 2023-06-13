@@ -1,4 +1,5 @@
-const number = glob.appId
+
+const number:string = '52010402'
 const fileItem = {
     USER_LIST: 'BMOP_USER_LIST_REQ_' + number, // 获取收费员
     // 用户管理

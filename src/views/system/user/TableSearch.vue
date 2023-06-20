@@ -56,7 +56,7 @@
               </div>
             </template>
             <div>
-              <el-button size="default" type="primary" @click="onSearch">查询 </el-button>
+              <el-button size="default" type="primary" v-auth="'USER_PAGE'" @click="onSearch">查询 </el-button>
               <el-button size="default" type="info" class="ml10" @click="onReset"> 重置 </el-button>
             </div>
           </el-form-item>

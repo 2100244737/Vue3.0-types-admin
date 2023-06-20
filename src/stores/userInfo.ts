@@ -15,7 +15,7 @@ export const useUserInfo = defineStore('userInfo', {
             photo: '',
             time: 0,
             roles: [],
-            menus:[],
+            menus: [],
             authBtnList: [],
         },
     }),
@@ -71,6 +71,22 @@ export const useUserInfo = defineStore('userInfo', {
                 }, 0);
             });
         },
+        // 按钮权限集
+        setAuthBtnList(list = []) {
+            const checkedNodes: Array<string> = []
+            const traverse = function (node:any) {
+                node.forEach((child:any) => {
+                    if (child.menuType == 4) {
+                        checkedNodes.push(child.path)
+                    }
+                    if (child.hasChild) {
+                        traverse(child.children)
+                    }
+                })
+            }
+            traverse(list)
+            return checkedNodes
+        },
         async getUserInfo() {
             return new Promise((resolve) => {
                 const params = {
@@ -80,9 +96,8 @@ export const useUserInfo = defineStore('userInfo', {
                 gettingData(params, system.USER_LOGIN).then((res: any) => {
                     const dataModel = JSON.parse(res)
                     let adminRoles: Array<string> = ['admin'];
-                    console.log(dataModel);
                     // admin 按钮权限标识
-                    let adminAuthBtnList: Array<string> = ['btn.add', 'btn.del', 'btn.edit', 'btn.link'];
+                    let adminAuthBtnList:Array<string>= this.setAuthBtnList(dataModel.menus);
                     const userInfos = {
                         userName: dataModel.name,
                         photo: dataModel.name === 'admin'

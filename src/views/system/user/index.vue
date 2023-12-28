@@ -1,22 +1,7 @@
 <template>
 	<div class="system-user-container layout-padding">
+    <TableSearch @search="searchChange"/>
 		<el-card shadow="hover" class="layout-padding-auto">
-<!--			<div class="system-user-search mb15">-->
-<!--				<el-input size="default" placeholder="请输入用户名称" style="max-width: 180px"> </el-input>-->
-<!--				<el-button size="default" type="primary" class="ml10" @click="getData">-->
-<!--					<el-icon>-->
-<!--						<ele-Search />-->
-<!--					</el-icon>-->
-<!--					查询-->
-<!--				</el-button>-->
-<!--				<el-button size="default" type="success" class="ml10" @click="onOpenAddUser('add')">-->
-<!--					<el-icon>-->
-<!--						<ele-FolderAdd />-->
-<!--					</el-icon>-->
-<!--					新增用户-->
-<!--				</el-button>-->
-<!--			</div>-->
-      <TableSearch @search="searchChange"/>
 			<el-table :data="state.tableData.data" v-loading="state.tableData.loading" style="width: 100%">
 				<el-table-column type="index" label="序号" width="60" />
 				<el-table-column prop="operatorCode" label="工号" show-overflow-tooltip></el-table-column>
@@ -32,10 +17,13 @@
 				<el-table-column label="操作" width="100">
 					<template #default="scope">
 						<el-button  size="small" text type="primary" @click="onOpenEditUser('edit', scope.row)">修改</el-button>
-						<el-button  size="small"  v-if="scope.row.status == '1'" text type="primary" @click="onRowDel(scope.row)">停用</el-button>
-						<el-button  size="small"  v-if="scope.row.status == '2'" text type="primary" @click="onRowDel(scope.row)">启用</el-button>
+						<el-button  size="small"  v-if="scope.row.status" text type="primary" @click="onRowDel(scope.row)">停用</el-button>
+						<el-button  size="small"  v-if="!scope.row.status" text type="primary" @click="onRowDel(scope.row)">启用</el-button>
 					</template>
 				</el-table-column>
+        <template  #empty>
+          <el-empty :image-size="200" />
+        </template>
 			</el-table>
       <Pagination class="mt15"
        :total="state.tableData.total"
@@ -48,7 +36,7 @@
 
 <script setup lang="ts" name="systemUser">
 import { defineAsyncComponent, reactive, onMounted, ref } from 'vue';
-import { ElMessageBox, ElMessage } from 'element-plus';
+import { ElMessageBox, ElMessage} from 'element-plus';
 import { gettingData, system } from "/@/api/index.ts";
 // 分页
 const Pagination = defineAsyncComponent(() => import('/@/components/pagination/index.vue'));
@@ -85,7 +73,7 @@ const searchChange =(data: object)=> {
 }
 // 打开修改用户弹窗
 const onOpenEditUser = (type: string, row: RowUserType) => {
-	userDialogRef.value.openDialog(type, row);
+  userDialogRef.value.openDialog(type, row);
 
 };
 // 删除用户

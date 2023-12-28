@@ -21,6 +21,7 @@
 			</transition-group>
 		</el-breadcrumb>
 	</div>
+
 </template>
 
 <script setup lang="ts" name="layoutBreadcrumb">

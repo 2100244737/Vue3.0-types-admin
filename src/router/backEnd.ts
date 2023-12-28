@@ -42,7 +42,7 @@ export async function initBackEndControlRoutes() {
     // 触发初始化用户信息 pinia
     // https://gitee.com/lyt-top/vue-next-admin/issues/I5F1HP
     // await useUserInfo().setUserInfos();
-    await useUserInfo().setUserInfos();
+     await useUserInfo().setUserInfos();
 
     // 获取路由菜单数据
     let res:[] = getBackEndControlRoutes()
@@ -53,7 +53,7 @@ export async function initBackEndControlRoutes() {
     await useRequestOldRoutes().setRequestOldRoutes(res);
     // await useRequestOldRoutes().setRequestOldRoutes(res);
     // 处理路由（component），替换 dynamicRoutes（/@/router/route）第一个顶级 children 的路由
-     dynamicRoutes[0].children  = await backEndComponent(res);
+    dynamicRoutes[0].children  = await backEndComponent(res);
     // 添加动态路由
     await setAddRoute();
     // 设置路由到 pinia routesList 中（已处理成多级嵌套路由）及缓存多级嵌套数组处理后的一维数组

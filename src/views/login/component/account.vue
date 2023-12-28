@@ -1,7 +1,7 @@
 <template>
 	<el-form size="large" class="login-content-form">
 		<el-form-item class="login-animation1">
-			<el-input text :placeholder="$t('message.account.accountPlaceholder1')" v-model="state.ruleForm.userName" clearable autocomplete="off">
+			<el-input text placeholder="用户名 admin 或不输均为 common" v-model="state.ruleForm.userName" clearable autocomplete="off">
 				<template #prefix>
 					<el-icon class="el-input__icon"><ele-User /></el-icon>
 				</template>
@@ -10,7 +10,7 @@
 		<el-form-item class="login-animation2">
 			<el-input
 				:type="state.isShowPassword ? 'text' : 'password'"
-				:placeholder="$t('message.account.accountPlaceholder2')"
+				placeholder="密码：123456"
 				v-model="state.ruleForm.password"
 				autocomplete="off"
 			>
@@ -32,7 +32,7 @@
 				<el-input
 					text
 					maxlength="4"
-					:placeholder="$t('message.account.accountPlaceholder3')"
+					placeholder="请输入验证码"
 					v-model="state.ruleForm.code"
 					clearable
 					autocomplete="off"
@@ -49,7 +49,7 @@
 		</el-form-item>
 		<el-form-item class="login-animation4">
 			<el-button type="primary" class="login-content-submit" round v-waves @click="onSignIn" :loading="state.loading.signIn">
-				<span>{{ $t('message.account.accountBtnText') }}</span>
+				<span>登 录</span>
 			</el-button>
 		</el-form-item>
 	</el-form>
@@ -59,7 +59,6 @@
 import { reactive, computed } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { ElMessage } from 'element-plus';
-import { useI18n } from 'vue-i18n';
 import Cookies from 'js-cookie';
 import { storeToRefs } from 'pinia';
 import { useThemeConfig } from '/@/stores/themeConfig';
@@ -70,7 +69,6 @@ import { formatAxis } from '/@/utils/formatTime';
 import { NextLoading } from '/@/utils/loading';
 
 // 定义变量内容
-const { t } = useI18n();
 const storesThemeConfig = useThemeConfig();
 const { themeConfig } = storeToRefs(storesThemeConfig);
 const route = useRoute();
@@ -129,7 +127,7 @@ const signInSuccess = (isNoPower: boolean | undefined) => {
 			router.push('/');
 		}
 		// 登录成功提示
-		const signInText = t('message.signInText');
+		const signInText = '欢迎回来！';
 		ElMessage.success(`${currentTimeInfo}，${signInText}`);
 		// 添加 loading，防止第一次进入界面时出现短暂空白
 		NextLoading.start();

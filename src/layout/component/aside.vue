@@ -86,7 +86,8 @@ const closeLayoutAsideMobileMode = () => {
 // 设置/过滤路由（非静态路由/是否显示在菜单中）
 const setFilterRoutes = () => {
 	if (themeConfig.value.layout === 'columns') return false;
-	state.menuList = filterRoutesFun(routesList.value);
+  console.log(routesList.value,'routesList.value');
+  state.menuList = filterRoutesFun(routesList.value);
 };
 // 路由过滤递归函数
 const filterRoutesFun = <T extends RouteItem>(arr: T[]): T[] => {
@@ -116,7 +117,8 @@ onBeforeMount(() => {
 	// 此界面不需要取消监听(mittBus.off('setSendColumnsChildren))
 	// 因为切换布局时有的监听需要使用，取消了监听，某些操作将不生效
 	mittBus.on('setSendColumnsChildren', (res: MittMenu) => {
-		state.menuList = res.children;
+
+    state.menuList = res.children;
 	});
 	mittBus.on('setSendClassicChildren', (res: MittMenu) => {
 		let { layout, isClassicSplitMenu } = themeConfig.value;

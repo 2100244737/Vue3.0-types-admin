@@ -644,7 +644,8 @@ const initSetStyle = () => {
 	onColumnsMenuBarGradualChange();
 };
 onMounted(() => {
-	nextTick(() => {
+
+  nextTick(() => {
 		// 判断当前布局是否不相同，不相同则初始化当前布局的样式，防止监听窗口大小改变时，布局配置logo、菜单背景等部分布局失效问题
 		if (!Local.get('frequency')) initLayoutChangeFun();
 		Local.set('frequency', 1);

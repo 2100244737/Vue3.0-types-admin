@@ -18,7 +18,7 @@ export const useThemeConfig = defineStore('themeConfig', {
 			 * 全局主题
 			 */
 			// 默认 primary 主题颜色
-			primary: '#409eff',
+			primary: '#556ec4',
 			// 是否开启深色模式
 			isIsDark: false,
 
@@ -36,9 +36,9 @@ export const useThemeConfig = defineStore('themeConfig', {
 			 * 菜单设置
 			 */
 			// 默认菜单导航背景颜色
-			menuBar: '#545c64',
+			menuBar: '#ffffff',
 			// 默认菜单导航字体颜色
-			menuBarColor: '#eaeaea',
+			menuBarColor: '#333333',
 			// 默认菜单高亮背景色
 			menuBarActiveColor: 'rgba(0, 0, 0, 0.2)',
 			// 是否开启菜单背景颜色渐变
@@ -104,7 +104,7 @@ export const useThemeConfig = defineStore('themeConfig', {
 			// 是否开启水印
 			isWartermark: true,
 			// 水印文案
-			wartermarkText: '宋文波',
+			wartermarkText: '',
 			/**
 			 * 其它设置
 			 */

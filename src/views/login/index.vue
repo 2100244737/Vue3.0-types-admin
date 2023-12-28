@@ -22,10 +22,10 @@
 					<div class="login-right-warp-main-form">
 						<div v-if="!state.isScan">
 							<el-tabs v-model="state.tabsActiveName">
-								<el-tab-pane :label="$t('message.label.one1')" name="account">
+								<el-tab-pane label="用户名登录" name="account">
 									<Account />
 								</el-tab-pane>
-								<el-tab-pane :label="$t('message.label.two2')" name="mobile">
+								<el-tab-pane label="手机号登录" name="mobile">
 									<Mobile />
 								</el-tab-pane>
 							</el-tabs>
@@ -57,12 +57,9 @@ import {Session} from "/@/utils/storage";
 import {initBackEndControlRoutes} from "/@/router/backEnd";
 import {formatAxis} from "/@/utils/formatTime";
 import {useRoute, useRouter} from "vue-router";
-import {useI18n} from "vue-i18n";
 import {initFrontEndControlRoutes} from "/@/router/frontEnd";
 const route = useRoute();
 const router = useRouter();
-// 定义变量内容
-const { t } = useI18n();
 // 引入组件
 const Account = defineAsyncComponent(() => import('/@/views/login/component/account.vue'));
 const Mobile = defineAsyncComponent(() => import('/@/views/login/component/mobile.vue'));
@@ -81,7 +78,7 @@ const state = reactive({
 const getMenu = () =>{
   const params = {
     openId: '55cf6a80d95d495a91cd2703b05207f1',
-    accessToken: 'b3d4b2835043443096f46aed729f61db'
+    accessToken: '7c31df7562f0411f8de8e524d4aa9dbe'
   }
   gettingData(params, system.USER_LOGIN).then( async () => {
     setToken('openId',params.openId)
@@ -89,7 +86,6 @@ const getMenu = () =>{
     if (!themeConfig.value.isRequestRoutes) {
       // 前端控制路由，2、请注意执行顺序
       const isNoPower = await initFrontEndControlRoutes();
-      console.log(isNoPower,'isNoPower');
       signInSuccess(isNoPower);
     } else {
       // 模拟后端控制路由，isRequestRoutes 为 true，则开启后端控制路由
@@ -124,7 +120,7 @@ const signInSuccess = (isNoPower: boolean | undefined) => {
       router.push('/');
     }
     // 登录成功提示
-    const signInText = t('message.signInText');
+    const signInText = '欢迎回来！';
     ElMessage.success(`${currentTimeInfo}，${signInText}`);
     // 添加 loading，防止第一次进入界面时出现短暂空白
     NextLoading.start();

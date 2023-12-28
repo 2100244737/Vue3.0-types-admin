@@ -3,7 +3,7 @@
 		<div class="system-role-padding layout-padding-auto layout-padding-view">
 			<div class="system-user-search mb15">
 				<el-input v-model="state.tableData.param.search" size="default" placeholder="请输入角色名称" style="max-width: 180px"> </el-input>
-				<el-button size="default" type="primary" class="ml10">
+				<el-button size="default" type="primary" class="ml10" @click="getData">
 					<el-icon>
 						<ele-Search />
 					</el-icon>
@@ -18,17 +18,10 @@
 			</div>
 			<el-table :data="state.tableData.data" v-loading="state.tableData.loading" style="width: 100%">
 				<el-table-column type="index" label="序号" width="60" />
-				<el-table-column prop="roleName" label="角色名称" show-overflow-tooltip></el-table-column>
-				<el-table-column prop="roleSign" label="角色标识" show-overflow-tooltip></el-table-column>
-				<el-table-column prop="sort" label="排序" show-overflow-tooltip></el-table-column>
-				<el-table-column prop="status" label="角色状态" show-overflow-tooltip>
-					<template #default="scope">
-						<el-tag type="success" v-if="scope.row.status">启用</el-tag>
-						<el-tag type="info" v-else>禁用</el-tag>
-					</template>
-				</el-table-column>
-				<el-table-column prop="describe" label="角色描述" show-overflow-tooltip></el-table-column>
-				<el-table-column prop="createTime" label="创建时间" show-overflow-tooltip></el-table-column>
+				<el-table-column prop="name" label="角色名称" show-overflow-tooltip></el-table-column>
+				<el-table-column prop="id" label="角色标识" show-overflow-tooltip></el-table-column>
+
+				<el-table-column prop="comments" label="角色描述" show-overflow-tooltip></el-table-column>
 				<el-table-column label="操作" width="100">
 					<template #default="scope">
 						<el-button :disabled="scope.row.roleName === '超级管理员'" size="small" text type="primary" @click="onOpenEditRole('edit', scope.row)"
@@ -79,11 +72,14 @@ const state = reactive<SysRoleState>({
 });
 // 查询分页
 const getData =()=> {
-  const params = {
-
-  }
-  gettingData(params, system.USER_PAGE).then((res) => {
-
+  state.tableData.loading = true
+  gettingData(state.tableData.param, system.ROLE_PAGE).then((res:string) => {
+    state.tableData.loading = false
+    const dataModel = JSON.parse(res)
+    state.tableData.data = dataModel.data
+    state.tableData.total = dataModel.totalCount
+  }).catch(() => {
+    state.tableData.loading = false
   });
 }
 // 初始化表格数据
@@ -122,7 +118,7 @@ const onRowDel = (row: RowRoleType) => {
 		type: 'warning',
 	})
 		.then(() => {
-			getTableData();
+      getData();
 			ElMessage.success('删除成功');
 		})
 		.catch(() => {});
@@ -130,12 +126,12 @@ const onRowDel = (row: RowRoleType) => {
 // 分页改变
 const onHandleSizeChange = (val: number) => {
 	state.tableData.param.pageSize = val;
-	getTableData();
+  getData()
 };
 // 分页改变
 const onHandleCurrentChange = (val: number) => {
 	state.tableData.param.pageNum = val;
-	getTableData();
+  getData()
 };
 // 页面加载时
 onMounted(() => {

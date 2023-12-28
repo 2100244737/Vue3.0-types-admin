@@ -68,7 +68,7 @@
 ------------------------------- */
 // 鼠标 hover 时颜色
 .el-menu-hover-bg-color {
-	background-color: var(--next-bg-menuBarActiveColor) !important;
+	//background-color: var(--next-bg-menuBarActiveColor) !important;
 }
 // 默认样式修改
 .el-menu {
@@ -103,13 +103,14 @@
 	@include generalIcon;
 }
 // 水平菜单、横向菜单高亮 背景色，鼠标 hover 时，有子级菜单的背景色
-.el-menu-item.is-active,
 .el-sub-menu.is-active .el-sub-menu__title,
 .el-sub-menu:not(.is-opened):hover .el-sub-menu__title {
 	@extend .el-menu-hover-bg-color;
 }
 .el-menu-item:hover {
-	@extend .el-menu-hover-bg-color;
+	//@extend .el-menu-hover-bg-color;
+	color: var(--el-color-primary);
+	background: linear-gradient(270deg, rgba(142, 167, 228, 0) 0%, rgba(85, 110, 196, .2) 100%)!important;
 }
 .el-sub-menu.is-active.is-opened .el-sub-menu__title {
 	background-color: unset !important;
@@ -168,11 +169,14 @@
 				}
 			}
 		}
-		.el-menu-item.is-active,
 		.el-sub-menu.is-active .el-sub-menu__title {
 			color: var(--el-menu-active-color);
 		}
 	}
+}
+.el-menu-item.is-active {
+	color: var(--el-color-primary);
+	background: linear-gradient(270deg, rgba(142, 167, 228, 0) 0%, rgba(85, 110, 196, .2) 100%)!important;
 }
 // 横向菜单（经典、横向）布局
 .el-menu.el-menu--horizontal {

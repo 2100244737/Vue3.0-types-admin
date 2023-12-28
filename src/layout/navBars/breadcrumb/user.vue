@@ -12,44 +12,11 @@
 				</el-dropdown-menu>
 			</template>
 		</el-dropdown>
-		<el-dropdown :show-timeout="70" :hide-timeout="50" trigger="click" @command="onLanguageChange">
-			<div class="layout-navbars-breadcrumb-user-icon">
-				<i
-					class="iconfont"
-					:class="state.disabledI18n === 'en' ? 'icon-fuhao-yingwen' : 'icon-fuhao-zhongwen'"
-					:title="$t('message.user.title1')"
-				></i>
-			</div>
-			<template #dropdown>
-				<el-dropdown-menu>
-					<el-dropdown-item command="zh-cn" :disabled="state.disabledI18n === 'zh-cn'">简体中文</el-dropdown-item>
-					<el-dropdown-item command="en" :disabled="state.disabledI18n === 'en'">English</el-dropdown-item>
-					<el-dropdown-item command="zh-tw" :disabled="state.disabledI18n === 'zh-tw'">繁體中文</el-dropdown-item>
-				</el-dropdown-menu>
-			</template>
-		</el-dropdown>
 		<div class="layout-navbars-breadcrumb-user-icon" @click="onSearchClick">
 			<el-icon :title="$t('message.user.title2')">
 				<ele-Search />
 			</el-icon>
 		</div>
-<!--		<div class="layout-navbars-breadcrumb-user-icon" @click="onLayoutSetingClick">-->
-<!--			<i class="icon-skin iconfont" :title="$t('message.user.title3')"></i>-->
-<!--		</div>-->
-<!--		<div class="layout-navbars-breadcrumb-user-icon">-->
-<!--			<el-popover placement="bottom" trigger="click" transition="el-zoom-in-top" :width="300" :persistent="false">-->
-<!--				<template #reference>-->
-<!--					<el-badge :is-dot="true">-->
-<!--						<el-icon :title="$t('message.user.title4')">-->
-<!--							<ele-Bell />-->
-<!--						</el-icon>-->
-<!--					</el-badge>-->
-<!--				</template>-->
-<!--				<template #default>-->
-<!--					<UserNews />-->
-<!--				</template>-->
-<!--			</el-popover>-->
-<!--		</div>-->
 		<div class="layout-navbars-breadcrumb-user-icon mr10" @click="onScreenfullClick">
 			<i
 				class="iconfont"
@@ -89,7 +56,6 @@ import { useI18n } from 'vue-i18n';
 import { storeToRefs } from 'pinia';
 import { useUserInfo } from '/@/stores/userInfo';
 import { useThemeConfig } from '/@/stores/themeConfig';
-import other from '/@/utils/other';
 import mittBus from '/@/utils/mitt';
 import { Session, Local } from '/@/utils/storage';
 import {removeToken} from "/@/utils/auth";
@@ -189,15 +155,6 @@ const onComponentSizeChange = (size: string) => {
 	Local.set('themeConfig', themeConfig.value);
 	initI18nOrSize('globalComponentSize', 'disabledSize');
 	window.location.reload();
-};
-// 语言切换
-const onLanguageChange = (lang: string) => {
-	Local.remove('themeConfig');
-	themeConfig.value.globalI18n = lang;
-	Local.set('themeConfig', themeConfig.value);
-	locale.value = lang;
-	other.useTitle();
-	initI18nOrSize('globalI18n', 'disabledI18n');
 };
 // 初始化组件大小/i18n
 const initI18nOrSize = (value: string, attr: string) => {
